@@ -12,25 +12,30 @@ RUN addgroup --gid $GROUP_ID toolman && \
     chmod -R g+rX /opt/conda
 COPY .condarc /root/.condarc
 RUN conda clean -i; \
-    conda install -c conda-forge mamba
+    conda install -y -c conda-forge mamba
 # prepare libs for open3d
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libgl1 \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 # set jupyterlab
-RUN mamba create -n lab jupyterlab
-# set embryo env
-RUN mamba create -n embryo -c conda-forge -c bioconda \
-    numpy pandas scikit-learn scipy umap-learn louvain \
-    h5py anndata pysam pybedtools pybigwig pyarrow loompy \
-    scanpy scvelo cooler cooltools \
-    matplotlib seaborn plotly \
-    jupyter_client ipykernel ipywidgets python-kaleido
+RUN mamba create -y -n lab jupyterlab
+# set embryo env ML
+RUN mamba create -y -n embryo -c conda-forge \
+    numpy=1.23.1 pandas scikit-learn scipy umap-learn \
+    pyarrow h5py \
+    matplotlib seaborn plotly python-kaleido \
+    jupyter_client ipykernel ipywidgets
+# set embryo env bioinformatics
+RUN mamba install -y -c conda-forge -c bioconda \
+    cooler=0.9.1 cooltools=0.5.4 scanpy scvelo \
+    anndata pysam pybedtools pybigwig  loompy
+# set embryo env 3D
 RUN conda run -n embryo pip install opencv-python open3d
+#RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
 RUN conda run -n embryo python -m ipykernel install --name=embryo --display-name="Python (embryo)"
 # configure jupyterlab
-RUN mamba install -n lab -c conda-forge nodejs=16
+RUN mamba install -y -n lab -c conda-forge nodejs=16
 RUN conda run -n lab jupyter labextension install jupyterlab-plotly
 COPY jupyter_entrypoint.sh /opt/conda/
 RUN chown toolman:toolman /opt/conda/jupyter_entrypoint.sh && \
@@ -39,5 +44,4 @@ USER toolman
 WORKDIR /share/Data/ychi/notebook
 ENTRYPOINT ["/opt/conda/jupyter_entrypoint.sh"]
 # TODO:
-# 1. fix numba bug when import scanpy
-# 2. adding R packages
+# 1. adding R packages
