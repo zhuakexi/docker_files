@@ -27,7 +27,7 @@ RUN mamba create -y -n embryo -c conda-forge \
     matplotlib seaborn plotly python-kaleido \
     jupyter_client ipykernel ipywidgets
 # set embryo env bioinformatics
-RUN mamba install -y -c conda-forge -c bioconda \
+RUN mamba install -y -n embryo -c conda-forge -c bioconda \
     cooler=0.9.1 cooltools=0.5.4 scanpy scvelo \
     anndata pysam pybedtools pybigwig  loompy
 # set embryo env 3D
