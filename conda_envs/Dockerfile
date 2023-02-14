@@ -45,3 +45,5 @@ WORKDIR /share/Data/ychi/notebook
 ENTRYPOINT ["/opt/conda/jupyter_entrypoint.sh"]
 # TODO:
 # 1. adding R packages
+# 2. mamba install -n embryo -c conda-forge upsetplot
+# 3. fix kaleido
