@@ -13,8 +13,9 @@ RUN addgroup --gid $GROUP_ID toolman && \
 COPY .condarc /root/.condarc
 RUN conda clean -i; \
     conda install -y -c conda-forge mamba
-RUN mamba install -y jupyterlab python=3.8.10
+#RUN apt-get update && apt-get -y install git gcc g++ liblapack-dev libblas-dev libboost-dev libarmadillo-dev libfftw3-dev
+RUN mamba create -n jimnet -y jupyterlab python=3.8.10
 COPY requirements.txt /opt/requirements.txt
-RUN pip install -r /opt/requirements.txt -i https://mirrors.pku.edu.cn/pypi/web/simple
+RUN conda run -n jimnet --no-capture-output pip install -r /opt/requirements.txt -i https://mirrors.pku.edu.cn/pypi/web/simple
 USER toolman
 SHELL ["/bin/bash", "-c"]
