@@ -96,6 +96,7 @@ dependencies:
   - libxcb=1.13=h7f98852_1004
   - libxml2=2.10.3=h7463322_0
   - libzlib=1.2.13=h166bdaf_4
+  - macs2=2.2.7.1=py310h1425a21_5
   - make=4.3=hd18ef5c_1
   - matplotlib-base=3.6.1=py310h8d5ebf3_1
   - munkres=1.1.4=pyh9f0ad1d_0
