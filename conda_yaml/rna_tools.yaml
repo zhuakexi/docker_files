@@ -218,6 +218,7 @@ dependencies:
   - tk=8.6.12=h27826a3_0
   - tktable=2.10=hb7b940f_3
   - tzdata=2022f=h191b570_0
+  - ucsc-bedgraphtobigwig=377=ha8a8165_3
   - ucsc-bigwigsummary=377=ha8a8165_3
   - umi_tools=1.1.2=py310h1425a21_1
   - unicodedata2=15.0.0=py310h5764c6d_0
