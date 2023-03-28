@@ -1,0 +1,1 @@
+docker build -t zhuakexi/neoloop_v01 --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) .
