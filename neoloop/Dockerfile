@@ -20,6 +20,9 @@ RUN conda config --set channel_priority strict
 RUN mamba install -n base cooler matplotlib pyensembl pybigwig intervaltree scikit-learn=1.1.2 joblib=1.1.0 rpy2 r-mgcv
 RUN apt-get update && apt-get -y install git gcc g++
 RUN conda run -n base --live-stream pip install -U neoloop TADLib pomegranate -i https://mirrors.pku.edu.cn/pypi/web/simple
-RUN echo -e ". /opt/conda/etc/profile.d/conda.sh\nconda activate base" >> /home/toolman/.bashrc
+# Add an entrypoint script to activate the conda base environment
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 # launching
 USER toolman
