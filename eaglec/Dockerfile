@@ -25,7 +25,7 @@ RUN mamba install -n base -y -c conda-forge numpy=1.21
 # Make RUN commands use the new environment:
 # SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 # 2. using source
-COPY bulk /opt/conda/lib/python3.8/site-packages/eaglec/data/
+COPY bulk /opt/conda/lib/python3.8/site-packages/eaglec/data/bulk/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

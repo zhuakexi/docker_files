@@ -1,1 +1,1 @@
-docker run --rm -it --mount type=bind,src=/share/Data/ychi,target=/share/Data/ychi --mount type=bind,src=/share/home/ychi,target=/share/home/ychi --mount type=bind,src=/shareb/ychi,target=/shareb/ychi zhuakexi/eaglec:0.3 /bin/bash
+docker run --rm -it --mount type=bind,src=/share/Data/ychi,target=/share/Data/ychi --mount type=bind,src=/share/home/ychi,target=/share/home/ychi --mount type=bind,src=/shareb/ychi,target=/shareb/ychi zhuakexi/eaglec:0.6 /bin/bash

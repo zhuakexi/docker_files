@@ -1,1 +1,1 @@
-docker build -t zhuakexi/eaglec:0.5 --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) .
+docker build -t zhuakexi/eaglec:0.6 --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) .
