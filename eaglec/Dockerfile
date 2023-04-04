@@ -19,12 +19,13 @@ RUN conda config --add channels bioconda
 RUN conda config --add channels conda-forge
 RUN mamba install -n base scikit-learn statsmodels matplotlib cooler pyBigWig pyensembl python=3.8 joblib=1.0.1 tensorflow=2 cython=0.29.24
 RUN conda run -n base --live-stream pip install -U eaglec -i https://mirrors.pku.edu.cn/pypi/web/simple
+RUN mamba install -n base -y -c conda-forge numpy=1.21
 # one of the two
 # 1. using conda run
 # Make RUN commands use the new environment:
 # SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 # 2. using source
-COPY bulk.zip /opt/conda/lib/python3.8/site-packages/eaglec/data/
+COPY bulk /opt/conda/lib/python3.8/site-packages/eaglec/data/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
