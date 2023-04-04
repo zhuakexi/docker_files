@@ -24,6 +24,7 @@ RUN conda run -n base --live-stream pip install -U eaglec -i https://mirrors.pku
 # Make RUN commands use the new environment:
 # SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 # 2. using source
+COPY bulk.zip /opt/conda/lib/python3.8/site-packages/eaglec/data/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
