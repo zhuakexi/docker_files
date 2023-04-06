@@ -11,6 +11,8 @@ RUN addgroup --gid $GROUP_ID toolman && \
     chown -R root:toolman /miniconda3 && \
     chmod -R g-w /miniconda3 && \
     chmod -R g+rX /miniconda3
+# fix bugs
+COPY coolToMatrix.py /miniconda3/lib/python3.6/site-packages/HiNT/coolToMatrix.py
 # init conda
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
