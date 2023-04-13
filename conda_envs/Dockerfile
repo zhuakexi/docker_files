@@ -40,7 +40,7 @@ RUN conda run -n embryo python -m ipykernel install --name=embryo --display-name
 # --- set bioR env ---
 RUN mamba create -n bioR -y -c conda-forge -c bioconda r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel
 RUN mamba install -y -n bioR -c conda-forge jupyter_client --freeze-installed
-RUN conda run -n bioR R -e "IRkernel::installspec(name = 'bioR', displayname = 'R (bioR)')"
+RUN conda run -n bioR R -e "IRkernel::installspec(name = 'bioR', user = FALSE, displayname = 'R (bioR)')"
 # --- configure jupyterlab ---
 RUN mamba install -y -n lab -c conda-forge nodejs=16
 RUN conda run -n lab jupyter labextension install jupyterlab-plotly
