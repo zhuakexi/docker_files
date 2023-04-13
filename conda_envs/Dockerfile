@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && rm -rf /var/lib/apt/lists/*
 # set jupyterlab
 RUN mamba create -y -n lab jupyterlab
+# --- set embryo env ---
 # set embryo env ML
 RUN mamba create -y -n embryo -c conda-forge \
     numpy=1.23.1 pandas scikit-learn scipy umap-learn \
@@ -32,9 +33,15 @@ RUN mamba install -y -n embryo -c conda-forge -c bioconda \
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot
 # set embryo env 3D
 RUN conda run -n embryo pip install opencv-python open3d
-#RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
+# additional packages 1
+RUN mamba install -y -c conda-forge openpyxl --freeze-installed
+# RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
 RUN conda run -n embryo python -m ipykernel install --name=embryo --display-name="Python (embryo)"
-# configure jupyterlab
+# --- set bioR env ---
+RUN mamba create -n bioR -y -c conda-forge -c bioconda r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel
+RUN mamba install -y -n bioR -c conda-forge jupyter_client --freeze-installed
+RUN conda run -n bioR R -e "IRkernel::installspec(name = 'bioR', displayname = 'R (bioR)')"
+# --- configure jupyterlab ---
 RUN mamba install -y -n lab -c conda-forge nodejs=16
 RUN conda run -n lab jupyter labextension install jupyterlab-plotly
 COPY jupyter_entrypoint.sh /opt/conda/
@@ -44,5 +51,5 @@ USER toolman
 WORKDIR /share/Data/ychi/notebook
 ENTRYPOINT ["/opt/conda/jupyter_entrypoint.sh"]
 # TODO:
-# 1. adding R packages
-# 3. fix kaleido
+# 1. make jupyter running in background
+# 2. fix kaleido
