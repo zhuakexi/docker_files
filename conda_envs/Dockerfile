@@ -34,7 +34,7 @@ RUN mamba install -y -n embryo -c conda-forge -c bioconda \
 # set embryo env 3D
 RUN conda run -n embryo pip install opencv-python open3d
 # additional packages 1
-RUN mamba install -y -c conda-forge openpyxl --freeze-installed
+RUN mamba install -n embryo -y -c conda-forge openpyxl --freeze-installed
 # RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
 RUN conda run -n embryo python -m ipykernel install --name=embryo --display-name="Python (embryo)"
 # --- set bioR env ---
