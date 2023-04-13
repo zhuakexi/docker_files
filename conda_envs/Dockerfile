@@ -29,7 +29,7 @@ RUN mamba create -y -n embryo -c conda-forge \
 # set embryo env bioinformatics
 RUN mamba install -y -n embryo -c conda-forge -c bioconda \
     cooler=0.9.1 cooltools=0.5.4 scanpy scvelo \
-    anndata pysam pybedtools pybigwig  loompy
+    anndata pysam pybedtools pybigwig loompy rmsd upsetplot
 # set embryo env 3D
 RUN conda run -n embryo pip install opencv-python open3d
 #RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
@@ -45,5 +45,4 @@ WORKDIR /share/Data/ychi/notebook
 ENTRYPOINT ["/opt/conda/jupyter_entrypoint.sh"]
 # TODO:
 # 1. adding R packages
-# 2. mamba install -n embryo -c conda-forge upsetplot
 # 3. fix kaleido

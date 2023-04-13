@@ -1,20 +1,10 @@
-#!/bin/bash --login
-# The --login ensures the bash configuration is loaded,
-# enabling Conda.
+#!/bin/bash
 
-# Enable strict mode.
-set -euo pipefail
-# ... Run whatever commands ...
+# Activate the conda base environment
+. /opt/conda/etc/profile.d/conda.sh
+conda activate lab
 
-# Temporarily disable strict mode and activate conda:
-set +euo pipefail
-#conda activate myenv
-source /opt/conda/bin/activate lab
-
-# Re-enable strict mode:
-set -euo pipefail
-
-# exec the final command:
+# launch jupyter lab
 exec jupyter lab --ip=0.0.0.0 --port=8087 --no-browser
 
 # invoke this script in docker file with:
