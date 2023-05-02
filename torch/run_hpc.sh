@@ -1,0 +1,2 @@
+# jupyter 8086
+docker run --rm -p 8086:8086 -e JUPYTER_ENABLE_LAB=yes -e JUPYTER_TOKEN=docker --name torch_ychi --mount type=bind,src=/mnt/c/Users/zhuakexi,target=/mnt/c/Users/zhuakexi zhuakexi/torch:v0.1 /bin/bash
