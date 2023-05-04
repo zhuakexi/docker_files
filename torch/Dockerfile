@@ -29,6 +29,4 @@ USER toolman
 WORKDIR /share/Data/ychi/notebook
 ENTRYPOINT ["/opt/conda/jupyter_entrypoint.sh"]
 # TODO:
-# 1. make jupyter running in background
-# 2. a same docker can run jupyterlab and exec custom command, hack jupyter_entrypoint.sh
-# 3. fix kaleido
+# 1. fix plotly extension installing
