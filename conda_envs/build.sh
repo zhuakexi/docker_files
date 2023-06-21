@@ -1,1 +1,1 @@
-docker build -t zhuakexi/bioenvs:v0.2.3 --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) .
+docker build -t zhuakexi/bioenvs:v0.2.4 --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) .

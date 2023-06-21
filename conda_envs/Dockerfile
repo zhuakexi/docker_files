@@ -34,16 +34,23 @@ RUN mamba install -y -n embryo -c conda-forge -c bioconda \
 # set embryo env 3D
 RUN conda run -n embryo pip install opencv-python open3d
 # additional packages 1
-RUN mamba install -n embryo -y -c conda-forge openpyxl --freeze-installed
+RUN mamba install -n embryo -y -c conda-forge openpyxl scikit-misc jupyter-dash --freeze-installed
 # RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
+# --- install embryo jupyter kernel ---
 RUN conda run -n embryo python -m ipykernel install --name=embryo --display-name="Python (embryo)"
+# --- set pymol env ---
+RUN mamba create -y -n pymol -c conda-forge pymol-open-source
+# --- set py2 env ---
+COPY dip-c.yaml /opt/conda/
+RUN mamba env create -n py2 -f /opt/conda/dip-c.yaml
 # --- set bioR env ---
-RUN mamba create -n bioR -y -c conda-forge -c bioconda r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel
+RUN mamba create -n bioR -y -c conda-forge -c bioconda r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
+# --- install bioR jupyter kernel ---
 RUN mamba install -y -n bioR -c conda-forge jupyter_client --freeze-installed
 RUN conda run -n bioR R -e "IRkernel::installspec(name = 'bioR', user = FALSE, displayname = 'R (bioR)')"
 # --- configure jupyterlab ---
-RUN mamba install -y -n lab -c conda-forge nodejs=16
-RUN conda run -n lab jupyter labextension install jupyterlab-plotly
+# RUN mamba install -y -n lab -c conda-forge nodejs=16
+# RUN conda run -n lab jupyter labextension install jupyterlab-plotly
 COPY jupyter_entrypoint.sh /opt/conda/
 RUN chown toolman:toolman /opt/conda/jupyter_entrypoint.sh && \
     chmod +x /opt/conda/jupyter_entrypoint.sh
