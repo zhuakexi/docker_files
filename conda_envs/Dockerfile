@@ -45,6 +45,8 @@ COPY dip-c.yaml /opt/conda/
 RUN mamba env create -n py2 -f /opt/conda/dip-c.yaml
 # --- set bioR env ---
 RUN mamba create -n bioR -y -c conda-forge -c bioconda r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
+# --- set snakemake env ---
+RUN mamba create -y -n snakemake -c bioconda snakemake
 # --- install bioR jupyter kernel ---
 RUN mamba install -y -n bioR -c conda-forge jupyter_client --freeze-installed
 RUN conda run -n bioR R -e "IRkernel::installspec(name = 'bioR', user = FALSE, displayname = 'R (bioR)')"
