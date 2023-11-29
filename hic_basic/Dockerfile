@@ -1,27 +1,26 @@
 # syntax=docker/dockerfile:1
 
-FROM continuumio/miniconda3:latest
+FROM mambaorg/micromamba:git-8440cec-focal-cuda-11.7.1
 
-ARG USER_ID
-ARG GROUP_ID
-RUN addgroup --gid $GROUP_ID toolman && \
-    adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID toolman && \
-    adduser root toolman && \
-    chown -R root:toolman /opt/conda && \
-    chmod -R g-w /opt/conda && \
-    chmod -R g+rX /opt/conda
-RUN conda install -y -c conda-forge mamba
-# --- install valid packages ---
-# set embryo env ML
-RUN mamba install -y -n base -c conda-forge \
+# prepare libs for open3d
+USER root
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libgl1 \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+USER $MAMBA_USER
+# --- set base env ---
+# conda install
+RUN micromamba install -y -n base -c conda-forge -c bioconda \
     numpy=1.23.1 pandas scikit-learn scikit-misc scipy umap-learn \
     pyarrow h5py openpyxl \
-    matplotlib seaborn plotly python-kaleido pymol-open-source
-# set embryo env 3D
-RUN conda run -n base pip install opencv-python open3d
-# Add an entrypoint script to activate the conda base environment
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-# launching
-USER toolman
+    matplotlib seaborn plotly python-kaleido pymol-open-source \
+    cooler cooltools scanpy scvelo \
+    anndata pysam pybedtools pybigwig loompy rmsd upsetplot \
+    && micromamba clean --all --yes
+# pip install
+ARG MAMBA_DOCKERFILE_ACTIVATE=1
+RUN pip install opencv-contrib-python-headless open3d
+# --- set bioR env ---
+RUN micromamba create -n bioR -y -c conda-forge -c bioconda \
+    r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
