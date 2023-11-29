@@ -7,6 +7,7 @@ USER root
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libgl1 \
     libgomp1 \
+    git less \
     && rm -rf /var/lib/apt/lists/*
 ARG NEW_MAMBA_USER=ychi
 ARG NEW_MAMBA_USER_ID=1006
