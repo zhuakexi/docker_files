@@ -32,7 +32,7 @@ RUN mamba install -y -n embryo -c conda-forge -c bioconda \
     cooler=0.9.1 cooltools=0.5.4 scanpy scvelo \
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot
 # set embryo env 3D
-RUN conda run -n embryo pip install opencv-python open3d
+RUN conda run -n embryo pip install opencv-contrib-python-headless open3d
 # additional packages 1
 RUN mamba install -n embryo -y -c conda-forge openpyxl scikit-misc jupyter-dash --freeze-installed
 # RUN mamba install -y -n embryo -c conda-forge numpy=1.23.1
@@ -45,8 +45,6 @@ COPY dip-c.yaml /opt/conda/
 RUN mamba env create -n py2 -f /opt/conda/dip-c.yaml
 # --- set bioR env ---
 RUN mamba create -n bioR -y -c conda-forge -c bioconda r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
-# --- set snakemake env ---
-RUN mamba create -y -n snakemake -c bioconda snakemake
 # --- install bioR jupyter kernel ---
 RUN mamba install -y -n bioR -c conda-forge jupyter_client --freeze-installed
 RUN conda run -n bioR R -e "IRkernel::installspec(name = 'bioR', user = FALSE, displayname = 'R (bioR)')"
