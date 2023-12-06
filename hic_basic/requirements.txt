@@ -1,0 +1,2 @@
+open3d==0.17.0
+opencv-contrib-python-headless==4.8.1.78
