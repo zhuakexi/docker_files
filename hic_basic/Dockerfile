@@ -35,14 +35,14 @@ USER $MAMBA_USER
 # conda install
 RUN micromamba install -y -n base -c conda-forge -c bioconda \
     numpy=1.23.1 pandas scikit-learn scikit-misc scipy umap-learn \
-    pyarrow h5py openpyxl \
+    pyarrow h5py openpyxl pytables \
     matplotlib seaborn plotly python-kaleido pymol-open-source \
     cooler cooltools scanpy scvelo \
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot \
     && micromamba clean --all --yes
 # pip install
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
-RUN pip install opencv-contrib-python-headless open3d
+RUN pip install opencv-contrib-python-headless open3d ipykernel
 # --- set bioR env ---
 RUN micromamba create -n bioR -y -c conda-forge -c bioconda \
     r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
