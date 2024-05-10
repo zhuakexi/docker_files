@@ -35,7 +35,7 @@ USER $MAMBA_USER
 # conda install
 RUN micromamba install -y -n base -c conda-forge -c bioconda \
     numpy=1.23.1 pandas scikit-learn scikit-misc scipy umap-learn \
-    pyarrow h5py openpyxl pytables \
+    pyarrow h5py openpyxl xlrd pytables h5netcdf netcdf4 \
     matplotlib seaborn plotly python-kaleido pymol-open-source \
     cooler cooltools scanpy scvelo \
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot \
