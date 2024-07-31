@@ -42,7 +42,7 @@ RUN micromamba install -y -n base -c conda-forge -c bioconda \
     && micromamba clean --all --yes
 # pip install
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
-RUN pip install opencv-contrib-python-headless open3d ipykernel
+RUN pip install opencv-contrib-python-headless open3d ipykernel nbconvert
 # --- set bioR env ---
 RUN micromamba create -n bioR -y -c conda-forge -c bioconda \
     r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
