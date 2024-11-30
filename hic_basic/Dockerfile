@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libgomp1 \
     git less \
     && rm -rf /var/lib/apt/lists/*
+
 ARG NEW_MAMBA_USER=ychi
 ARG NEW_MAMBA_USER_ID=1006
 ARG NEW_MAMBA_USER_GID=1006
@@ -31,6 +32,7 @@ RUN if grep -q '^ID=alpine$' /etc/os-release; then \
     :
 ENV MAMBA_USER=$NEW_MAMBA_USER
 USER $MAMBA_USER
+
 # --- set base env ---
 # conda install
 RUN micromamba install -y -n base -c conda-forge -c bioconda \
@@ -39,10 +41,19 @@ RUN micromamba install -y -n base -c conda-forge -c bioconda \
     matplotlib seaborn plotly python-kaleido pymol-open-source \
     cooler cooltools scanpy scvelo \
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot \
+    jupyter jupyter_client ipykernel nbconvert \
     && micromamba clean --all --yes
+
 # pip install
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
-RUN pip install opencv-contrib-python-headless open3d ipykernel nbconvert
+RUN pip install opencv-contrib-python-headless open3d
+
 # --- set bioR env ---
 RUN micromamba create -n bioR -y -c conda-forge -c bioconda \
-    r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi
+    r-tidyverse r-seurat bioconductor-tradeseq bioconductor-slingshot bioconductor-rgreat r-irkernel bioconductor-glmGamPoi \
+    jupyter_client \
+    && micromamba clean --all --yes
+
+# Install Jupyter kernels for both environments
+RUN micromamba run -n base python -m ipykernel install --user --name=base --display-name="Python (base)" && \
+    micromamba run -n bioR R -e "IRkernel::installspec(name = 'bioR', displayname = 'R (bioR)')"

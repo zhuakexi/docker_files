@@ -1,1 +1,1 @@
-docker build -t zhuakexi/hic_basic:v0.8 .
+docker build -t zhuakexi/hic_basic:v0.9 .
