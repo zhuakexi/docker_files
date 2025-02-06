@@ -42,7 +42,7 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
     cooler cooltools scanpy scvelo \
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot \
     jupyter jupyter_client ipykernel nbconvert
-
+# 也可以使用下面命令，hic_basic_v095.yaml是手动写的dependecies文件，conda可以直接从这个文件安装指定的包
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v095 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.yaml
 ```
 test
