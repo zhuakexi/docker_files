@@ -27,11 +27,10 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base
 ```
 3. [tmp] v094 只添加了squidpy的版本，因为发现tangram依赖包版本过低，不适合放在现有环境里。
 ```
-```
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v094 --yes --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v091.lock
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v094 pip install opencv-contrib-python-headless open3d
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba install -p /share/home/ychi/mambaforge/envs/hic_basic_v094 -c conda-forge --yes squidpy
-
+```
 4. v095 基于light_base_02，使用新的lockfile，添加了pytorch，提升了numexpr的版本
 
 安装conda包
@@ -55,10 +54,10 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
 # This won't work.
 # singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba env export --explicit -p /share/home/ychi/mambafoge/envs/hic_basic_v095 > /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.lock
 
-# Use the host conda. Don't know why
+# Have to use the host conda. Don't know why
 mamba list --explicit --md5 -p /share/home/ychi/mambaforge/envs/hic_basic_v095 > /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.lock
 ```
 安装仅支持pip的包
 ```
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v095 pip install opencv-contrib-python-headless open3d torch torchvision torchaudio
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v095 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple opencv-contrib-python-headless open3d torch torchvision torchaudio
 ```
