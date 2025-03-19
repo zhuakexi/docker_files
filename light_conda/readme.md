@@ -2,6 +2,7 @@
 轻量的ubunt-cuda-micromamba docker image + portable conda env
 
 # release
+## hic_basic
 0. v091
 
 2024年12月间较为稳定的常用基本python包（见core_package_news.md）。  
@@ -61,3 +62,11 @@ mamba list --explicit --md5 -p /share/home/ychi/mambaforge/envs/hic_basic_v095 >
 ```
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v095 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple opencv-contrib-python-headless open3d torch torchvision torchaudio
 ```
+编辑模式安装hires_utils和hic_basic
+```
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v095 pip install -e /share/home/ychi/dev/hires_utils
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v095 pip install -e /share/home/ychi/dev/hic_basic
+```
+
+## bioR
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba install -p /share/home/ychi/mambaforge/envs/bioR -c conda-forge -y r-rmarkdown r-irkernel r-languageserver
