@@ -94,13 +94,52 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
 
 # 安装nbconvert
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba install -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v096 -c conda-forge nbconvert
+
+# 安装nodejs
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba install -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v096 -c conda-forge nodejs
 ```
+
+
 ## bioR
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba install -p /share/home/ychi/mambaforge/envs/bioR -c conda-forge -y r-rmarkdown r-irkernel r-languageserver nbconvert
 
 ## scsv
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v095 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.yaml
+```shell
+# This takes hours and 6G memory and won't finish
+# singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/scsv_v1 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.yaml
+# Use lockfile instead
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/scsv_v1 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.lock
+# cooler needs to be upgraded, otherwise:
+# ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+# cooltools 0.7.1 requires cython, which is not installed.
+# bioframe 0.7.2 requires numpy<2,>=1.10, but you have numpy 2.2.6 which is incompatible.
+# cooler 0.10.2 requires numpy<2,>=1.9, but you have numpy 2.2.6 which is incompatible.
+# numba 0.60.0 requires numpy<2.1,>=1.22, but you have numpy 2.2.6 which is incompatible.
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple --upgrade cooltools bioframe cooler numba
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple opencv-contrib-python-headless open3d torch torchvision torchaudio ultralytics
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple --upgrade numexpr
+# in wd /share/home/ychi/dev/ChromaPalette
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip install .
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple --upgrade pybigwig cooltools
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip uninstall cooltools
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/scsv_v1 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple --upgrade cooltools
+```
 
+## torch clean
+```shell
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/torch_clean python=3.10
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/torch_clean pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple torch torchvision
+# use 2.6.0
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/torch_clean python=3.10
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/torch_clean pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple torch==2.6.0 torchvision==0.21.0
+```
+
+## torch clean mgt
+```shell
+mamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/torch_clean_mgt python=3.10
+mamba run -p /share/home/ychi/mambaforge/envs/torch_clean_mgt pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple torch torchvision
+mamba run -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/torch_clean_mgt python -c "import torch; print(torch.cuda.is_available())"
+```
 ## gumnet
 
 1. original requirements
