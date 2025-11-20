@@ -1,13 +1,18 @@
-# BASE IMAGE
-FROM continuumio/miniconda3
+# syntax=docker/dockerfile:1
 
-SHELL ["/bin/bash","-c"]
+FROM mambaorg/micromamba:git-6d896e6-cuda12.2.2-ubuntu22.04
 
-WORKDIR /opt
+# prepare libs for gumnet
+# curl for vscode server
+USER root
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    git gcc g++ liblapack-dev libblas-dev libboost-dev libarmadillo-dev libfftw3-dev
 
-RUN apt-get update && apt-get -y install git gcc g++ liblapack-dev libblas-dev libboost-dev libarmadillo-dev libfftw3-dev \
-    && git clone https://github.com/xulabs/aitom.git && cd aitom \
-    && pip install cython==0.29.21 numpy==1.19.2 \
-    && bash build.sh
+COPY aitom /opt/aitom
 
-EXPOSE 8888
+RUN micromamba install -y -n base -c conda-forge \
+    cython numpy=1.19.2 && \
+    micromamba clean --all --yes
+# build
+RUN cd /opt/aitom && \
+    bash build.sh

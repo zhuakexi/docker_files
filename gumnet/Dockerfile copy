@@ -1,0 +1,28 @@
+# BASE IMAGE
+FROM continuumio/miniconda3
+
+SHELL ["/bin/bash","-c"]
+
+WORKDIR /opt
+
+# 安装依赖
+RUN apt-get update && apt-get -y install git gcc g++ liblapack-dev libblas-dev libboost-dev libarmadillo-dev libfftw3-dev
+
+# 复制本地 aitom 项目到镜像中
+COPY aitom /opt/aitom
+
+# 进入项目目录并执行构建脚本
+# RUN cd /opt/aitom && \
+#     pip install cython==0.29.21 numpy==1.19.2 && \
+#     bash build.sh
+# 使用 Conda 安装 cython 和 numpy
+RUN conda install -y -c conda-forge \
+    cython \
+    numpy=1.19.2 && \
+    conda clean -afy  # 清理 Conda 缓存以减小镜像体积
+# 进入项目目录并执行构建脚本
+RUN cd /opt/aitom && \
+    bash build.sh
+
+
+EXPOSE 8888
