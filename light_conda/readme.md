@@ -97,6 +97,22 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
 
 # 安装nodejs
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba install -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v096 -c conda-forge nodejs
+# 安装pytest
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple pytest
+
+# 安装go相关库
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple goatools mygene gseapy obonet
+
+# 安装scarches
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple scarches
+
+# ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+# dask-expr 1.1.13 requires dask==2024.8.2, but you have dask 2024.7.1 which is incompatible.
+# dask-expr 1.1.13 requires pandas>=2, but you have pandas 1.5.3 which is incompatible.
+# genes2genes 0.2.0 requires pandas>=2.0.3, but you have pandas 1.5.3 which is incompatible.
+
+# 安装doubletdetection
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple doubletdetection
 ```
 
 
