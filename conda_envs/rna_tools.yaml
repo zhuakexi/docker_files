@@ -245,4 +245,4 @@ dependencies:
   - zlib=1.2.13=h166bdaf_4
   - zstandard=0.19.0=py310h5764c6d_0
   - zstd=1.5.2=h6239696_4
-prefix: /share/home/ychi/miniconda3/envs/rna_tools_standard
+prefix: /share/home/ychi/mambaforge/envs/rna_tools_standard

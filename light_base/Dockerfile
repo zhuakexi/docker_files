@@ -8,6 +8,11 @@ USER root
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libgl1 \
     libgomp1 \
-    git less curl \
+    git \
+    less \
+    curl \
+    nodejs \
+    npm \
+    libreoffice \
     build-essential \
     && rm -rf /var/lib/apt/lists/*

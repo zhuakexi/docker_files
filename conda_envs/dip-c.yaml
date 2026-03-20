@@ -34,4 +34,4 @@ dependencies:
   - zlib=1.2.11=h516909a_1010
   - pip:
     - pdbx-mmcif==0.0.2
-prefix: /share/home/ychi/miniconda3/envs/dip-c
+prefix: /share/home/ychi/mambaforge/envs/dip-c

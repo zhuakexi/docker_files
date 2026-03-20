@@ -1,34 +1,34 @@
-# 整体架构
-轻量的ubunt-cuda-micromamba docker image + portable conda env
+# hic_basic Notes
+这份文档保留 `hic_basic` 系列和相关环境的历史安装记录。当前 active 结构中，Docker 基础镜像在 `light_base/`，Conda 定义在 `conda_envs/`。
 
 # release
 ## hic_basic
 0. v091
 
-2024年12月间较为稳定的常用基本python包（见core_package_news.md）。  
+2024年12月间较为稳定的常用基本 python 包（见 `core_package_news.md`）。  
 在/share/home/ychi/mambaforge/envs/hic_basic_v091中第一次创建并导出为hic_basic_v091.explicit.yaml。  
 可以在容器中使用
 ```shell
-micromamba create -p xxx --yes --file hic_basic_v091.explicit.yaml
+micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v091 --yes --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v091.explicit.yaml
 ```
 来复制。
 
 1. v092
 添加了open3d和opencv等不适合用conda装的包。  
 ```shell
-singularity run -B /share/home/ychi:/share/home/ychi light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v092 --yes --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v091.lock
+singularity run -B /share/home/ychi:/share/home/ychi light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v092 --yes --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v091.lock
 singularity run -B /share/home/ychi:/share/home/ychi light_base_v01.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v092 pip install opencv-contrib-python-headless open3d
 ```
 2. [tmp] v093 添加了squidpy和tangram用来做ST分析。
 ```shell
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v093 --yes --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v091.lock
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v093 --yes --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v091.lock
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v093 pip install opencv-contrib-python-headless open3d
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba install -p /share/home/ychi/mambaforge/envs/hic_basic_v093 pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v093 pip install squidpy>=1.1.0 tangram-sc==0.4.0
 ```
 3. [tmp] v094 只添加了squidpy的版本，因为发现tangram依赖包版本过低，不适合放在现有环境里。
 ```shell
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v094 --yes --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v091.lock
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba create -p /share/home/ychi/mambaforge/envs/hic_basic_v094 --yes --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v091.lock
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v094 pip install opencv-contrib-python-headless open3d
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/light_base_v01.sif micromamba install -p /share/home/ychi/mambaforge/envs/hic_basic_v094 -c conda-forge --yes squidpy
 ```
@@ -44,7 +44,7 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
     anndata pysam pybedtools pybigwig loompy rmsd upsetplot \
     jupyter jupyter_client ipykernel nbconvert
 # 也可以使用下面命令，hic_basic_v095.yaml是手动写的dependecies文件，conda可以直接从这个文件安装指定的包
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v095 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.yaml
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v095 --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v095.yaml
 ```
 test
 ```shell
@@ -53,10 +53,10 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
 制作lockfile
 ```shell
 # This won't work.
-# singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba env export --explicit -p /share/home/ychi/mambafoge/envs/hic_basic_v095 > /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.lock
+# singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba env export --explicit -p /share/home/ychi/mambafoge/envs/hic_basic_v095 > /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v095.lock
 
 # Have to use the host conda. Don't know why
-mamba list --explicit --md5 -p /share/home/ychi/mambaforge/envs/hic_basic_v095 > /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.lock
+mamba list --explicit --md5 -p /share/home/ychi/mambaforge/envs/hic_basic_v095 > /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v095.lock
 ```
 安装仅支持pip的包
 ```shell
@@ -70,7 +70,7 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
 
 5. v096 基于v095，添加cellrank
 ```shell
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v096 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.yaml
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/hic_basic_v096 --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v095.yaml
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple opencv-contrib-python-headless open3d torch torchvision torchaudio
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -e /share/home/ychi/dev/hires_utils
 singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba run -p /share/home/ychi/mambaforge/envs/hic_basic_v096 pip install -e /share/home/ychi/dev/hic_basic
@@ -117,14 +117,18 @@ singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light
 
 
 ## bioR
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba install -p /share/home/ychi/mambaforge/envs/bioR -c conda-forge -y r-rmarkdown r-irkernel r-languageserver nbconvert
+`bioR` 现在已经导出为 `conda_envs/bioR.yaml`，可以直接按 YAML 重建：
+
+```shell
+micromamba create -p /share/home/ychi/mambaforge/envs/bioR --yes --file /share/home/ychi/dev/docker_files/conda_envs/bioR.yaml
+```
 
 ## scsv
 ```shell
 # This takes hours and 6G memory and won't finish
-# singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/scsv_v1 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.yaml
+# singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/scsv_v1 --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v095.yaml
 # Use lockfile instead
-singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/scsv_v1 --file /share/home/ychi/dev/docker_files/light_conda/hic_basic_v095.lock
+singularity run -B /share/home/ychi:/share/home/ychi /shareb/ychi/ana/envs/light_base_02.sif micromamba create -y -r /share/home/ychi/mambaforge -p /share/home/ychi/mambaforge/envs/scsv_v1 --file /share/home/ychi/dev/docker_files/conda_envs/hic_basic_v095.lock
 # cooler needs to be upgraded, otherwise:
 # ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 # cooltools 0.7.1 requires cython, which is not installed.
