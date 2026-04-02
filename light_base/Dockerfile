@@ -4,6 +4,7 @@ FROM mambaorg/micromamba:git-6d896e6-cuda12.2.2-ubuntu22.04
 
 # prepare libs for open3d
 # curl for vscode server
+# slurm-client for sbatch, srun, scontrol, squeue, scancel
 USER root
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libgl1 \
@@ -15,4 +16,5 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     npm \
     libreoffice \
     build-essential \
+    slurm-client \
     && rm -rf /var/lib/apt/lists/*
