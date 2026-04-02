@@ -16,6 +16,66 @@
 - Build the current base image from the active workflow: `cd light_base && ./build.sh`
 - Build directly with Docker if needed: `docker build -t zhuakexi/light_base:v0.2 light_base`
 - Mirror/publish workflow for `light_base`: update this repo first, then sync the same changes to `/share/home/ychi/dev/light_base`, then push that repo to `https://github.com/zhuakexi/light_base.git`
+
+### light_base Release and Publishing Workflow
+The `light_base/` directory is the upstream source. Changes flow through this path:
+```
+this repo (light_base/) -> /share/home/ychi/dev/light_base -> GitHub -> Aliyun Container Registry
+```
+
+**Step-by-step release process:**
+
+1. **Make changes in this repo** (`/share/home/ychi/dev/docker_files/light_base/`)
+
+2. **Sync to publishing repo**:
+   ```bash
+   cp /share/home/ychi/dev/docker_files/light_base/Dockerfile /share/home/ychi/dev/light_base/Dockerfile
+   ```
+
+3. **Commit and push to GitHub**:
+   ```bash
+   cd /share/home/ychi/dev/light_base
+   git add Dockerfile
+   git commit -m "describe your changes"
+   git push origin master
+   ```
+
+4. **Create and push a release tag**:
+   ```bash
+   git tag release-v1.2
+   git push origin release-v1.2
+   ```
+
+5. **Publish GitHub Release** (required to trigger Aliyun build):
+   - Visit https://github.com/zhuakexi/light_base/releases
+   - Select the tag `release-v1.2`
+   - Set Release title: `release-v1.2`
+   - Click "Publish release"
+   - This triggers the automated build in Aliyun Container Registry
+
+6. **Wait for Aliyun auto-build** (at least 10 minutes)
+
+7. **Pull and verify the image**:
+   ```bash
+   docker pull crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2
+   
+   # Verify slurm commands (sbatch, srun, scontrol, squeue, scancel)
+   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2 -c "which sbatch srun scontrol squeue scancel"
+   
+   # Verify ssh for git operations inside container
+   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2 -c "which ssh"
+   
+   # Verify git
+   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2 -c "git --version"
+   ```
+
+**Current packages in light_base:**
+- Base: `mambaorg/micromamba:git-6d896e6-cuda12.2.2-ubuntu22.04`
+- Graphics/libs: `libgl1`, `libgomp1`
+- Tools: `git`, `less`, `curl`, `nodejs`, `npm`, `libreoffice`, `build-essential`
+- Cluster: `slurm-client` (sbatch, srun, scontrol, squeue, scancel)
+- SSH: `openssh-client` (for git ssh operations inside container)
+
 - For local testing in this repository, install all Conda environments under `/share/home/ychi/mambaforge/envs/`.
 - When creating or running Conda environments, always reference them by absolute path with `-p /share/home/ychi/mambaforge/envs/<env>` rather than by environment name. This avoids environment lookup issues when the same setup is used inside Docker.
 - Create an environment from a YAML file:
