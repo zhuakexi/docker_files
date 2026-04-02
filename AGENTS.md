@@ -42,14 +42,14 @@ this repo (light_base/) -> /share/home/ychi/dev/light_base -> GitHub -> Aliyun C
 
 4. **Create and push a release tag**:
    ```bash
-   git tag release-v1.2
-   git push origin release-v1.2
+   git tag release-v<VERSION>
+   git push origin release-v<VERSION>
    ```
 
 5. **Publish GitHub Release** (required to trigger Aliyun build):
    - Visit https://github.com/zhuakexi/light_base/releases
-   - Select the tag `release-v1.2`
-   - Set Release title: `release-v1.2`
+   - Select the tag `release-v<VERSION>`
+   - Set Release title: `release-v<VERSION>`
    - Click "Publish release"
    - This triggers the automated build in Aliyun Container Registry
 
@@ -57,16 +57,10 @@ this repo (light_base/) -> /share/home/ychi/dev/light_base -> GitHub -> Aliyun C
 
 7. **Pull and verify the image**:
    ```bash
-   docker pull crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2
-   
-   # Verify slurm commands (sbatch, srun, scontrol, squeue, scancel)
-   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2 -c "which sbatch srun scontrol squeue scancel"
-   
-   # Verify ssh for git operations inside container
-   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2 -c "which ssh"
-   
-   # Verify git
-   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:1.2 -c "git --version"
+   docker pull crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:<VERSION>
+
+   # Run verification commands (replace with your own tests)
+   docker run --rm --entrypoint bash crpi-iljsyiotrsmkpbnu.cn-beijing.personal.cr.aliyuncs.com/zhuakexi/light_base_github:<VERSION> -c "<YOUR_TEST_COMMANDS>"
    ```
 
 **Current packages in light_base:**
@@ -75,6 +69,18 @@ this repo (light_base/) -> /share/home/ychi/dev/light_base -> GitHub -> Aliyun C
 - Tools: `git`, `less`, `curl`, `nodejs`, `npm`, `libreoffice`, `build-essential`
 - Cluster: `slurm-client` (sbatch, srun, scontrol, squeue, scancel)
 - SSH: `openssh-client` (for git ssh operations inside container)
+
+**Example verification commands** (adjust based on what you added):
+```bash
+# Check if a package binary exists
+docker run --rm --entrypoint bash <IMAGE> -c "which <command>"
+
+# Check package version
+docker run --rm --entrypoint bash <IMAGE> -c "<command> --version"
+
+# Interactive inspection
+docker run -it --rm --entrypoint bash <IMAGE>
+```
 
 - For local testing in this repository, install all Conda environments under `/share/home/ychi/mambaforge/envs/`.
 - When creating or running Conda environments, always reference them by absolute path with `-p /share/home/ychi/mambaforge/envs/<env>` rather than by environment name. This avoids environment lookup issues when the same setup is used inside Docker.
